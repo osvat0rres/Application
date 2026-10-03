@@ -10,7 +10,14 @@ This application is still in progress.
 4. edit expensive
 5. Delete expenses
 6. expense categories
+   - food
+   - entertainment
+   - Bills
+   - shopping
+   - education
+   - other
 7. monthly dashboard
+- will tell you how much you spend in a month or week
 8. Search and Filter
 9. Monthly/weekly repost
 10. Budget system
