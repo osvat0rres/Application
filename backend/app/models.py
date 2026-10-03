@@ -16,12 +16,12 @@ class User(AbstractBaseUser, models.Model):
 
 class Catergory(models.Model):
     CATEGORY_CHOICE = [
-        'Rent',
-        'Entertaiment',
-        'Groceries',
-        "Gas",
-        "Utilities",
-        'bills'
+        ("Rent", "Rent"),
+    ("Entertainment", "Entertainment"),
+    ("Groceries", "Groceries"),
+    ("Gas", "Gas"),
+    ("Utilities", "Utilities"),
+    ("Bills", "Bills"),
     ]
     user =models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="categories")
     name = models.CharField(max_length=100, choices=CATEGORY_CHOICE)
@@ -29,19 +29,21 @@ class Catergory(models.Model):
 class Expense(models.Model):
     user = models.ForeignKey( settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="expenses")
     category = models.ForeignKey(Catergory, on_delete=models.SET_NULL, null=True, related_name="expenses")
-    tittle = models.CharField(max_length=200)
+    title = models.CharField(max_length=200)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(blank=True)
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DurationField(auto_now = True)
+    updated_at = models.DateTimeField(auto_now = True)
     
     def __str__(self):
-        return f"{self.tittle} - {self.amount}"
+        return f"{self.title} - {self.amount}"
     
 class RecurringExpense(models.Model):
     frequncy = [
-        "Weekly", "Monthly","Yearly"
+          ("Weekly", "Weekly"),
+    ("Monthly", "Monthly"),
+    ("Yearly", "Yearly"),
     ]
     
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="recurring_expenses")
