@@ -1,2 +1,2 @@
-# Application
-application in production...
+# Expense Tracker
+This application is still in progress.
