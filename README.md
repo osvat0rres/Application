@@ -22,3 +22,14 @@ This application is still in progress.
 9. Monthly/weekly repost
 10. Budget system
 11. Recurring expenses
+
+Django rest-freamework
+```
+ pip install djangorestframework           
+```
+
+Django web-token
+```
+ pip install djangorestframework-simplejwt
+```
+
