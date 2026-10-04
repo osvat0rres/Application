@@ -1,65 +1,28 @@
 from rest_framework import serializers
-from .models import User,Catergory, Expense, RecurringExpense
+from .models import Expenses
 
-
-class UserSerializer(serializers.ModelSerializer):
+class ExpensesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = [
-            "id",
-            "email",
-            "first_name",
-            "last_name",
-        ]
+        model = Expenses
+        fields = (
+            'user',
+            'title',
+            'category',
+            'spend',
+            'description',
+            'spend_date',
+            'created_at'
+        )
+    def validate_price(self,value):
+        if value <= 0:
+            raise serializers.ValidationError(
+                "Spend most be grated then 0."
+            )
+        return value
 
-
-class CategorySerializer(serializers.ModelSerializer):
+class ExpensesReturnSerializer(serializers.ModelSerializer):
+    expense = ExpensesSerializer(many=True, read_only=True)
+    
     class Meta:
-        model = Catergory
-        fields = [
-            "id",
-            "user",
-            "name",
-        ]
-
-
-class ExpenseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Expense
-        fields = [
-            "id",
-            "user",
-            "category",
-            "title",
-            "amount",
-            "description",
-            "date",
-            "created_at",
-            "updated_at",
-        ]
-        read_only_fields = [
-            "id",
-            "user",
-            "created_at",
-            "updated_at",
-        ]
-
-
-class RecurringExpenseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = RecurringExpense
-        fields = [
-            "id",
-            "user",
-            "category",
-            "title",
-            "amount",
-            "frequency",
-            "start_date",
-            "next_date",
-        ]
-        read_only_fields = [
-            "id",
-            "user",
-        ]
-      
+        model = Expenses
+        fields = ("user", "title", "category","spend", "spend_date", "description") 
