@@ -1,42 +1,16 @@
-from rest_framework import filters, generics, viewsets
-from app.models import Catergory, User, Expense, RecurringExpense
-from app.serializers import CategorySerializer, UserSerializer, ExpenseSerializer, RecurringExpenseSerializer
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from django.shortcuts import get_object_or_404
+from .serializers import ExpensesSerializer, ExpensesReturnSerializer
+from app.models import Expenses
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework import generics
 
-class UserView(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]
+
+
+class ExpensesListCreateView(generics.ListCreateAPIView):
+    queryset = Expenses.objects.all()
+    serializer_class = ExpensesSerializer
     
     
-class ExpenseView(APIView):
-    permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        expenses = Expense.objects.filter(user=request.user)
-
-        serializer = ExpenseSerializer(
-            expenses,
-            many=True
-        )
-
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = ExpenseSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-
-            return Response(
-                serializer.data,
-                status=status.HTTP_201_CREATED
-            )
-
-        return Response(
-            serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
-        )
+    
