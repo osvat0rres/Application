@@ -1,22 +1,36 @@
 from django.shortcuts import get_object_or_404
-from .serializers import ExpensesSerializer, ExpensesReturnSerializer
+from .serializers import ExpensesSerializer, ExpensesReturnSerializer, RegisterSerializer
 from app.models import Expenses
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import generics
 from django.db import models
 from rest_framework.permissions import IsAdminUser,AllowAny, IsAuthenticated
+from django.contrib.auth import get_user_model
+
+
 
 
 
 class ExpensesListCreateView(generics.ListCreateAPIView):
-    queryset = Expenses.objects.prefetch_related('user').all()
     serializer_class = ExpensesSerializer
     permission_classes = [IsAuthenticated]
     
+    def get_queryset(self):
+        #Super user can see everything
+        if self.request.user.is_superuser:
+            return Expenses.objects.select_related("user").all()
+        
+        return Expenses.objects.filter(user=self.request.user).select_related("user")
+    
+        
     def get_total_exepenses(self):
         total_expenses = self.get_queryset().aggregate(total=models.Sum('amount'))['total']
         return total_expenses if total_expenses is not None else 0
+    
+    def perform_create(self, serializer):
+        # Automatically assign the logged-in user
+        serializer.save(user=self.request.user)
     
     
 class ExpensesDeatailView(generics.RetrieveUpdateDestroyAPIView):
@@ -24,6 +38,15 @@ class ExpensesDeatailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ExpensesSerializer
     permission_classes = [IsAuthenticated]
     
+    def get_queryset(self):
+        # Superuser can access everyone's expenses
+        if self.request.user.is_superuser:
+            return Expenses.objects.all()
+
+        # Regular users can only access their own expenses
+        return Expenses.objects.filter(
+            user=self.request.user
+            )
     
     
     
@@ -32,7 +55,15 @@ class ExpensesTotalView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        return Expenses.objects.filter(user=self.request.user)
+        # Superuser gets all expenses
+        if self.request.user.is_superuser:
+            return Expenses.objects.all()
+
+        # Regular user gets only their expenses
+        return Expenses.objects.filter(
+            user=self.request.user
+        )
+    
     
     def get_total_expenses(self):
         total_expenses = self.get_queryset().aggregate(
@@ -51,5 +82,8 @@ class ExpensesTotalView(generics.ListAPIView):
         })
         
         
-        
-        
+class RegisterUserView(generics.CreateAPIView):
+    User = get_user_model()
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [AllowAny]
