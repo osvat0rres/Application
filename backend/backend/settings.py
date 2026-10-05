@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'app',
-    'silk',
+    'silk',    
 ]
 
 MIDDLEWARE = [
@@ -122,3 +122,12 @@ STATIC_URL = 'static/'
 
 # for user
 AUTH_USER_MODEL = 'app.User'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        
+    ]
+}
