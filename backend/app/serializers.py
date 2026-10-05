@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Expenses
+from .models import Expenses, User
 
 class ExpensesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,10 +19,27 @@ class ExpensesSerializer(serializers.ModelSerializer):
                 "Spend most be grated then 0."
             )
         return value
-
-#This serializer is for the total view
-class ExpensesReturnSerializer(serializers.ModelSerializer):
     
+    
+#This serializer is for the total view
+class ExpensesReturnSerializer(serializers.ModelSerializer):  
     class Meta:
         model = Expenses
         fields = ("user", "title", "category","spend", "spend_date", "description") 
+        
+class RegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    
+    class Meta:
+        model = User
+        fields = ('username','email',"password")
+        
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data["username"],
+            email=validated_data["email"],
+            password=validated_data["password"]
+        )
+
+        return user 
+        
