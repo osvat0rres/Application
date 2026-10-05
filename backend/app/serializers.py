@@ -20,8 +20,8 @@ class ExpensesSerializer(serializers.ModelSerializer):
             )
         return value
 
+#This serializer is for the total view
 class ExpensesReturnSerializer(serializers.ModelSerializer):
-    expense = ExpensesSerializer(many=True, read_only=True)
     
     class Meta:
         model = Expenses
