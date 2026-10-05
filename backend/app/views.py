@@ -10,13 +10,19 @@ from rest_framework.permissions import IsAdminUser,AllowAny, IsAuthenticated
 
 
 class ExpensesListCreateView(generics.ListCreateAPIView):
-    queryset = Expenses.objects.all()
+    queryset = Expenses.objects.prefetch_related('user').all()
     serializer_class = ExpensesSerializer
     permission_classes = [IsAuthenticated]
     
     def get_total_exepenses(self):
         total_expenses = self.get_queryset().aggregate(total=models.Sum('amount'))['total']
         return total_expenses if total_expenses is not None else 0
+    
+    
+class ExpensesDeatailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Expenses.objects.all()
+    serializer_class = ExpensesSerializer
+    permission_classes = [IsAuthenticated]
     
     
     
@@ -43,5 +49,7 @@ class ExpensesTotalView(generics.ListAPIView):
             "total_expenses": self.get_total_expenses(),
             "expense": serializer.data
         })
+        
+        
         
         
