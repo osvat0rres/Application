@@ -33,3 +33,7 @@ Django web-token
  pip install djangorestframework-simplejwt
 ```
 
+to install silk to avoided the n-1 problem
+```
+pip install django-silk 
+```
