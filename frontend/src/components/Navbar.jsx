@@ -7,7 +7,7 @@ function Navbar(){
             <a href="/" className="navbar-item">Home</a>
             <a href="/about" className="navbar-item">About</a>
             <a href="/contact" className="navbar-item">Contact</a>
-            <a href="/login" className="navbar-item>Login">Login</a>
+            <a href="/login" className="navbar-item">Login</a>
         </section>
     )
 }
