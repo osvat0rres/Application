@@ -1,14 +1,16 @@
 import React from "react";
 import '../style/Navbar.css';
+import { Link } from "react-router-dom";
 
 function Navbar(){
     return(
-        <section className="navbar">
-            <a href="/" className="navbar-item">Home</a>
-            <a href="/about" className="navbar-item">About</a>
-            <a href="/contact" className="navbar-item">Contact</a>
-            <a href="/login" className="navbar-item">Login</a>
-        </section>
+       <section>
+            <Link to="/" className="navbar-item">Home</Link>
+            <Link to="/about" className="navbar-item">About</Link>
+            <Link to="/contact" className="navbar-item">Contact</Link>
+            <Link to="/login" className="navbar-item">Login</Link>
+
+       </section>
     )
 }
 
