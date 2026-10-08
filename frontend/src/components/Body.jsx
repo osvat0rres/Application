@@ -1,48 +1,42 @@
 
 import React from "react";
 import "../style/Body.css";
+import { useNavigate } from "react-router-dom";
 
-function Body() {
-    return (
+
+
+function Body(){
+     const navigate = useNavigate();
+
+    return(
         <main className="body">
-
             <section className="announcement-box">
 
-                {/* Image */}
                 <section className="announcement-image">
-                    <img
-                        src="/images/expense-tracker.png"
-                        alt="Expense tracker illustration"
-                    />
+                    <img src="/" alt="Expense tracker illurstation"></img>
                 </section>
 
-                {/* Text */}
-                <section className="announcement-content">
-
+                <section className="announcement-conten">
                     <p className="announcement-subtitle">
-                        Welcome
+                        welcome
                     </p>
-
                     <h1 className="announcement-title">
-                        Take Control of Your Expenses
+                        Take Controle of Your Exepense
                     </h1>
-
-                    <p className="announcement-description">
-                        Keep track of your spending, manage your budget,
-                        and stay in control of your finances.
+                    <p>
+                        Keep tack of your spending, manage your budges and 
+                        stay in control of your finances
                     </p>
+                    <button type="button"  className="announcement-button"
+                                onClick={() => navigate("/login")}>
+                                Get Started
+                            </button>
 
-                    <button className="announcement-button">
-                        Get Started
-                    </button>
 
                 </section>
-
             </section>
-
         </main>
-    );
+    )
 }
 
 export default Body;
-
