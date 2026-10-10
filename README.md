@@ -37,3 +37,7 @@ to install silk to avoided the n-1 problem
 ```
 pip install django-silk 
 ```
+download the packages to connect the frontend with the backend
+```
+npm install axios react-react-dom jwt-decode
+```
